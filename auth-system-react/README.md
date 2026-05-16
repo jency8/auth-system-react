@@ -1,6 +1,6 @@
 # AuthSystem — React Frontend + Express Backend
 
-The original vanilla HTML/JS frontend has been converted to React while keeping the Express.js backend, MongoDB connection, and JWT auth flow completely untouched.
+
 
 ## Project Structure
 
@@ -72,20 +72,8 @@ npm run dev
 
 Open http://localhost:3000 in your browser.
 
-## What Changed (Frontend Only)
 
-| Original | React Version |
-|----------|--------------|
-| `index.html` (monolithic) | Split into `LoginPage.tsx`, `RegisterPage.tsx`, `DashboardPage.tsx` |
-| Global `TokenManager` object | `src/utils/tokenManager.ts` |
-| Global `apiClient` object | `src/utils/apiClient.ts` (same logic, typed) |
-| DOM manipulation for page switching | `AuthContext.tsx` with `useState` for `page` state |
-| `Auth.checkSession()` on DOMContentLoaded | `useEffect` in `AuthContext` |
-| Inline `checkStrength()` | Inline function in `RegisterPage.tsx` |
-| `data-toggle-password` buttons | `PasswordInput.tsx` component with internal `useState` |
-| CDN Tailwind | Proper Tailwind v3 + PostCSS build |
 
-## What Was NOT Changed
 
 - All backend files (`server.js`, routes, controllers, models, middleware, config)
 - The JWT auth flow (access token + refresh token rotation)
