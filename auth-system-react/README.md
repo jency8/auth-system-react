@@ -1,0 +1,94 @@
+# AuthSystem — React Frontend + Express Backend
+
+The original vanilla HTML/JS frontend has been converted to React while keeping the Express.js backend, MongoDB connection, and JWT auth flow completely untouched.
+
+## Project Structure
+
+```
+auth-system/
+├── frontend/          ← React (converted)
+│   ├── src/
+│   │   ├── components/
+│   │   │   └── PasswordInput.tsx    ← Reusable password toggle input
+│   │   ├── context/
+│   │   │   └── AuthContext.tsx      ← Global auth state (useState/useEffect)
+│   │   ├── pages/
+│   │   │   ├── LoginPage.tsx        ← Login page component
+│   │   │   ├── RegisterPage.tsx     ← Register page component
+│   │   │   └── DashboardPage.tsx    ← Dashboard page component
+│   │   ├── utils/
+│   │   │   ├── apiClient.ts         ← Fetch wrapper + auto token refresh
+│   │   │   └── tokenManager.ts     ← localStorage token management
+│   │   ├── App.tsx                  ← Page router (login/register/dashboard)
+│   │   ├── main.tsx                 ← React entry point
+│   │   └── index.css               ← All Tailwind + custom styles
+│   ├── index.html
+│   ├── package.json
+│   ├── tailwind.config.js
+│   ├── postcss.config.js
+│   ├── tsconfig.json
+│   └── vite.config.ts              ← Dev proxy: /api → localhost:5000
+└── backend/           ← Express (unchanged)
+    ├── config/
+    │   ├── db.js                   ← MongoDB connection
+    │   └── jwt.js                  ← Token generation/verification
+    ├── controllers/
+    │   └── authController.js
+    ├── middleware/
+    │   ├── authMiddleware.js
+    │   └── validateMiddleware.js
+    ├── models/
+    │   └── User.js
+    ├── routes/
+    │   └── authRoutes.js
+    ├── server.js
+    ├── package.json
+    └── .env.example
+
+```
+
+## Quick Start
+
+### 1. Set up the backend
+
+```bash
+cd backend
+cp .env.example .env
+# Edit .env — fill in your MONGODB_URI and JWT secrets
+npm install
+npm run dev
+# Backend runs on http://localhost:5000
+```
+
+### 2. Set up the React frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+# Frontend runs on http://localhost:3000
+# Vite proxies /api requests to http://localhost:5000 automatically
+```
+
+Open http://localhost:3000 in your browser.
+
+## What Changed (Frontend Only)
+
+| Original | React Version |
+|----------|--------------|
+| `index.html` (monolithic) | Split into `LoginPage.tsx`, `RegisterPage.tsx`, `DashboardPage.tsx` |
+| Global `TokenManager` object | `src/utils/tokenManager.ts` |
+| Global `apiClient` object | `src/utils/apiClient.ts` (same logic, typed) |
+| DOM manipulation for page switching | `AuthContext.tsx` with `useState` for `page` state |
+| `Auth.checkSession()` on DOMContentLoaded | `useEffect` in `AuthContext` |
+| Inline `checkStrength()` | Inline function in `RegisterPage.tsx` |
+| `data-toggle-password` buttons | `PasswordInput.tsx` component with internal `useState` |
+| CDN Tailwind | Proper Tailwind v3 + PostCSS build |
+
+## What Was NOT Changed
+
+- All backend files (`server.js`, routes, controllers, models, middleware, config)
+- The JWT auth flow (access token + refresh token rotation)
+- The exact UI design, colors, fonts, and layout
+- MongoDB schema and connection logic
+- Rate limiting and brute-force protection
