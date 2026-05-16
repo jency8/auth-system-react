@@ -73,10 +73,3 @@ npm run dev
 Open http://localhost:3000 in your browser.
 
 
-
-
-- All backend files (`server.js`, routes, controllers, models, middleware, config)
-- The JWT auth flow (access token + refresh token rotation)
-- The exact UI design, colors, fonts, and layout
-- MongoDB schema and connection logic
-- Rate limiting and brute-force protection
